@@ -4,7 +4,7 @@
 
 Maven Building
 ```
-mvn archetype:generate        -DarchetypeGroupId=io.quarkus        -DarchetypeArtifactId=quarkus-amazon-lambda-archetype        -DarchetypeVersion=1.6.0.Final
+mvn archetype:generate -DarchetypeGroupId=io.quarkus -DarchetypeArtifactId=quarkus-amazon-lambda-archetype -DarchetypeVersion=1.6.0.Final
 cd serverlessapp/
 mvn clean package -DskipTests
 ```
