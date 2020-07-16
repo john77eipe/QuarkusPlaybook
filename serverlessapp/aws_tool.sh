@@ -4,13 +4,14 @@ function cmd_create() {
   echo Creating function
   set -x
   aws lambda create-function \
+    --profile oprexeq \
     --function-name ${FUNCTION_NAME} \
     --zip-file ${ZIP_FILE} \
     --handler ${HANDLER} \
     --runtime ${RUNTIME} \
     --role ${LAMBDA_ROLE_ARN} \
     --timeout 15 \
-    --memory-size 256 \
+    --memory-size 128 \
     ${LAMBDA_META}
 # Enable and move this param above ${LAMBDA_META}, if using AWS X-Ray
 #    --tracing-config Mode=Active \
@@ -19,15 +20,16 @@ function cmd_create() {
 function cmd_delete() {
   echo Deleting function
   set -x
-  aws lambda delete-function --function-name ${FUNCTION_NAME}
+  aws lambda delete-function --profile oprexeq --function-name ${FUNCTION_NAME}
 }
 
 function cmd_invoke() {
   echo Invoking function
   set -x
-  aws lambda invoke response.txt \
+  aws lambda invoke file://target/response.txt \
+    --profile oprexeq \
     --function-name ${FUNCTION_NAME} \
-    --payload file://payload.json \
+    --payload file://target/payload.json \
     --log-type Tail \
     --query 'LogResult' \
     --output text |  base64 --decode
@@ -39,6 +41,7 @@ function cmd_update() {
   echo Updating function
   set -x
   aws lambda update-function-code \
+    --profile oprexeq \
     --function-name ${FUNCTION_NAME} \
     --zip-file ${ZIP_FILE}
 }
@@ -77,4 +80,3 @@ do
   { set +x; } 2>/dev/null
   shift
 done
-
