@@ -12,9 +12,9 @@ public class ProcessingService {
             throw new IllegalArgumentException(CAN_ONLY_GREET_NICKNAMES);
         }
         String result = input.getGreeting() + " " + input.getName();
-        OutputObject out = new OutputObject();
-        out.setResult(result);
-        //this is fun
-        return out;
+        OutputObject output = new OutputObject();
+        result="my name SK";
+        output.setResult(result);
+        return output;
     }
 }

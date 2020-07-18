@@ -26,15 +26,15 @@ function cmd_delete() {
 function cmd_invoke() {
   echo Invoking function
   set -x
-  aws lambda invoke file://target/response.txt \
+  aws lambda invoke \
     --profile oprexeq \
     --function-name ${FUNCTION_NAME} \
-    --payload file://target/payload.json \
+    --payload file:///Users/johne/Documents/CodeRepository/QuarkusHackathonWorkspace/serverlessapp/payload.txt \
     --log-type Tail \
-    --query 'LogResult' \
-    --output text |  base64 --decode
+    --cli-binary-format raw-in-base64-out \
+    response.json
   { set +x; } 2>/dev/null
-  cat response.txt && rm -f response.txt
+  cat response.json
 }
 
 function cmd_update() {
@@ -46,9 +46,10 @@ function cmd_update() {
     --zip-file ${ZIP_FILE}
 }
 
-FUNCTION_NAME=Serverlessapp
+#FUNCTION_NAME=Serverlessapp
 HANDLER=io.quarkus.amazon.lambda.runtime.QuarkusStreamHandler::handleRequest
 RUNTIME=java11
+LAMBDA_ROLE_ARN=arn:aws:iam::221252253450:role/lambda-role
 ZIP_FILE=fileb:///Users/johne/Documents/CodeRepository/QuarkusHackathonWorkspace/serverlessapp/target/function.zip
 
 function usage() {
