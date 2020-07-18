@@ -55,7 +55,7 @@ public class CodeService {
     public void packageCode(Code code) throws IOException {
 
         // Create code from template by replacing the required code string
-        /*
+        
         List<String> newLines = new ArrayList<>();
         for (String line : Files.readAllLines(
             Paths.get("/Users/johne/Documents/CodeRepository/QuarkusHackathonWorkspace/serverlessapp/src/main/java/org/qksplaybook/ProcessingService.bak"), 
@@ -69,20 +69,13 @@ public class CodeService {
         System.out.println(newLines);
         Files.write(Paths.get("/Users/johne/Documents/CodeRepository/QuarkusHackathonWorkspace/serverlessapp/src/main/java/org/qksplaybook/ProcessingService.java"), 
             newLines, StandardCharsets.UTF_8);
-        */
+        
         // Perform maven compilation
         ProcessBuilder processBuilderForMVNPackage = new ProcessBuilder();
-        ProcessBuilder processBuilderForLamdbaCreate = new ProcessBuilder();
-        // -- Linux --
 
-        // Run a shell command
         processBuilderForMVNPackage.command("bash", "-c", "mvn clean package -DskipTests")
         .directory(new File("/Users/johne/Documents/CodeRepository/QuarkusHackathonWorkspace/serverlessapp"));
-        processBuilderForLamdbaCreate.command("bash", "-c", "LAMBDA_ROLE_ARN=\"arn:aws:iam::221252253450:role/lambda-role\" sh target/manage.sh create")
-        .directory(new File("/Users/johne/Documents/CodeRepository/QuarkusHackathonWorkspace/serverlessapp"));
-        // Run a shell script
-        //processBuilder.command("path/to/hello.sh");
-
+       
         try {
             System.out.println(processBuilderForMVNPackage.command());
             Process process = processBuilderForMVNPackage.start();
@@ -106,7 +99,67 @@ public class CodeService {
             e.printStackTrace();
         } catch (InterruptedException e) {
             e.printStackTrace();
+        } 
+        
+        ProcessBuilder processBuilderForLamdbaCreate = new ProcessBuilder();
+        processBuilderForLamdbaCreate.command("bash", "-c", "FUNCTION_NAME="+code.getFilename()+" ./aws_tool.sh delete create")
+        .directory(new File("/Users/johne/Documents/CodeRepository/QuarkusHackathonWorkspace/serverlessapp"));
+
+        try {
+            System.out.println(processBuilderForLamdbaCreate.command());
+            Process process = processBuilderForLamdbaCreate.start();
+            StringBuilder output = new StringBuilder();
+            BufferedReader reader = new BufferedReader(
+                    new InputStreamReader(process.getInputStream()));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                output.append(line + "\n");
+            }
+
+            boolean exitVal = process.waitFor(100, TimeUnit.SECONDS);
+            if (exitVal) {
+                System.out.println("Success!");
+                System.out.println(output);
+            } else {
+                //abnormal...
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
+
+
+        ProcessBuilder processBuilderForLamdbaInvoke = new ProcessBuilder();
+        processBuilderForLamdbaInvoke.command("bash", "-c", "FUNCTION_NAME="+code.getFilename()+" ./aws_tool.sh invoke")
+        .directory(new File("/Users/johne/Documents/CodeRepository/QuarkusHackathonWorkspace/serverlessapp"));
+
+        try {
+            System.out.println(processBuilderForLamdbaInvoke.command());
+            Process process = processBuilderForLamdbaInvoke.start();
+            StringBuilder output = new StringBuilder();
+            BufferedReader reader = new BufferedReader(
+                    new InputStreamReader(process.getInputStream()));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                output.append(line + "\n");
+            }
+
+            boolean exitVal = process.waitFor(80, TimeUnit.SECONDS);
+            if (exitVal) {
+                System.out.println("Success!");
+                System.out.println(output);
+            } else {
+                //abnormal...
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         // Perform package and upload
 
         // Run the endpoint and get metrics and results
