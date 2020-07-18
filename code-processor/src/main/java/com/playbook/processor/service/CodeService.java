@@ -1,60 +1,21 @@
-package org.playbook.services;
+package com.playbook.processor.service;
 
-import com.mongodb.client.MongoClient;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoCursor;
-import org.bson.Document;
-import org.playbook.bean.Code;
+import com.playbook.processor.bean.Code;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 @ApplicationScoped
 public class CodeService {
     
-    @Inject
-    MongoClient mongoClient;
-    
-    public List<Code> list() {
-        List<Code> codes = new ArrayList<>();
+    public String packageCode(Code code) {
         
-        try (MongoCursor<Document> mongoCursor = getCollection().find().iterator()) {
-            while (mongoCursor.hasNext()) {
-                Document document = mongoCursor.next();
-                Code code = new Code();
-                code.setFilename(document.getString("name"));
-                code.setCode(document.getString("code"));
-                codes.add(code);
-            }
-        }
-        return codes;
-    }
-    
-    public String add(Code code) {
-        Document document = new Document()
-                .append("name", code.getFilename())
-                .append("code", code.getCode());
-        return getCollection().insertOne(document).getInsertedId().toString();
-    }
-    
-    private MongoCollection getCollection() {
-        return mongoClient.getDatabase("test").getCollection("codebase");
-    }
-
-    public void packageCode(Code code) throws IOException {
-
+        // TODO: Need to get results
+        
         // Create code from template by replacing the required code string
         /*
         List<String> newLines = new ArrayList<>();
@@ -75,15 +36,15 @@ public class CodeService {
         ProcessBuilder processBuilderForMVNPackage = new ProcessBuilder();
         ProcessBuilder processBuilderForLamdbaCreate = new ProcessBuilder();
         // -- Linux --
-
+        
         // Run a shell command
         processBuilderForMVNPackage.command("bash", "-c", "mvn clean package -DskipTests")
-        .directory(new File("/Users/johne/Documents/CodeRepository/QuarkusHackathonWorkspace/serverlessapp"));
+                .directory(new File("/Users/johne/Documents/CodeRepository/QuarkusHackathonWorkspace/serverlessapp"));
         processBuilderForLamdbaCreate.command("bash", "-c", "LAMBDA_ROLE_ARN=\"arn:aws:iam::221252253450:role/lambda-role\" sh target/manage.sh create")
-        .directory(new File("/Users/johne/Documents/CodeRepository/QuarkusHackathonWorkspace/serverlessapp"));
+                .directory(new File("/Users/johne/Documents/CodeRepository/QuarkusHackathonWorkspace/serverlessapp"));
         // Run a shell script
         //processBuilder.command("path/to/hello.sh");
-
+        
         try {
             System.out.println(processBuilderForMVNPackage.command());
             Process process = processBuilderForMVNPackage.start();
@@ -94,7 +55,7 @@ public class CodeService {
             while ((line = reader.readLine()) != null) {
                 output.append(line + "\n");
             }
-
+            
             boolean exitVal = process.waitFor(20, TimeUnit.SECONDS);
             if (exitVal) {
                 System.out.println("Success!");
@@ -102,19 +63,17 @@ public class CodeService {
             } else {
                 //abnormal...
             }
-
+            return output.toString();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        return "Temp response";
         // Perform package and upload
-
+        
         // Run the endpoint and get metrics and results
-
+        
     }
     
-    public String fetchResult(String id) {
-        return Optional.ofNullable(mongoClient.getDatabase("test").getCollection("results").find().first()).orElseGet(Document::new).toJson();
-    }
 }
