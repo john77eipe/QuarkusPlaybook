@@ -1,6 +1,6 @@
 package com.playbook.processor.service;
 
-import com.playbook.processor.bean.Code;
+import com.common.beans.Code;
 
 import javax.enterprise.context.ApplicationScoped;
 import java.io.BufferedReader;

@@ -1,10 +1,10 @@
-package org.playbook.services;
+package com.apiserver.services;
 
+import com.common.beans.Code;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import org.bson.Document;
-import org.playbook.bean.Code;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -170,4 +170,11 @@ public class CodeService {
     public String fetchResult(String id) {
         return Optional.ofNullable(mongoClient.getDatabase("test").getCollection("results").find().first()).orElseGet(Document::new).toJson();
     }
+    
+    public void addResults(String result) {
+        Document document = new Document()
+                .append("result", result);
+        mongoClient.getDatabase("test").getCollection("results").insertOne(document);
+    }
+    
 }

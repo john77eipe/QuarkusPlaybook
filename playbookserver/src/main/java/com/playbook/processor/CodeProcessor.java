@@ -1,6 +1,6 @@
 package com.playbook.processor;
 
-import com.playbook.processor.bean.Code;
+import com.common.beans.Code;
 import com.playbook.processor.service.CodeService;
 import io.smallrye.reactive.messaging.annotations.Broadcast;
 import org.eclipse.microprofile.reactive.messaging.Incoming;
@@ -21,23 +21,12 @@ public class CodeProcessor {
      * @param code
      */
     @Incoming("code-exec")
-    @Outgoing("code-output")
+    @Outgoing("code-result")
     @Broadcast
     public String processExec(Code code) {
-        return codeService.packageCode(code);
+        System.out.println(code);
+        return "ok";
+//        return codeService.packageCode(code);
     }
-    
-    /**
-     * A bean consuming data from the "code-exec" Kafka topic.
-     *
-     * @param code
-     */
-    @Incoming("code-output")
-    @Broadcast
-    public void processOutput(Code code) {
-        // update in DB
-        // send back to client
-    }
-    
     
 }

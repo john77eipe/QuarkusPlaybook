@@ -1,11 +1,13 @@
 package com.playbook.processor;
 
-import com.playbook.processor.bean.Code;
-import io.quarkus.kafka.client.serialization.JsonbDeserializer;
+import com.common.beans.Code;
+import org.apache.commons.lang3.SerializationUtils;
+import org.apache.kafka.common.serialization.Deserializer;
 
-public class CodeDeserializer extends JsonbDeserializer<Code> {
+public class CodeDeserializer implements Deserializer<Code> {
     
-    public CodeDeserializer() {
-        super(Code.class);
+    @Override
+    public Code deserialize(String s, byte[] bytes) {
+        return SerializationUtils.deserialize(bytes);
     }
 }

@@ -1,4 +1,4 @@
-package org.playbook;
+package com.apiserver;
 
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.Test;
