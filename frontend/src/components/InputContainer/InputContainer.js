@@ -35,6 +35,7 @@ function InputContainer(props) {
 
 	const [fileName, setFileName] = useState("");
 	const [code, setCode] = useState("");
+	const [sampleInput, setSampleInput] = useState("");
 	const [loader, setLoader] = useState(true)
 
 	if (loader) {
@@ -44,15 +45,11 @@ function InputContainer(props) {
 					<div>Loading....</div>
 				</Container>
 			</section>)
-
 	}
 
 	return (
 		<section className={classes.root}>
 			<Container className={classes.container}>
-				{/*<Typography variant="h4" marked="center" className={classes.title} component="h2">*/}
-				{/*	How it works*/}
-				{/*</Typography>*/}
 				<div>
 					<Grid container spacing={5}>
 						<Grid item xs={12}>
@@ -90,12 +87,27 @@ function InputContainer(props) {
 						</Grid>
 						<Grid item xs={12}>
 							<div className={classes.item}>
+								<TextField
+									id="standard-full-width"
+									label={<Typography variant="h5" align="center">
+										Sample Input
+									</Typography>}
+									placeholder="Sample Input"
+									fullWidth
+									value={sampleInput}
+									onChange={event => setSampleInput(event.target.value)}
+									variant="outlined"
+									margin="normal"
+								/>
+							</div>
+						</Grid>
+						<Grid item xs={12}>
+							<div className={classes.item}>
 								<Typography variant="h5" align="center">
 									Give a filename, write your code and click on the below "Show Magic" button.
 								</Typography>
 							</div>
 						</Grid>
-
 					</Grid>
 				</div>
 				<Button
