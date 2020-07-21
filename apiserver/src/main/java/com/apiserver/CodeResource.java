@@ -96,7 +96,7 @@ public class CodeResource {
      *
      * @param result
      */
-    @Incoming("code-output")
+    @Incoming("code-result")
     public void processOutput(String result) {
         System.out.println("Result received: "+ result);
         codeService.addResults(result);
