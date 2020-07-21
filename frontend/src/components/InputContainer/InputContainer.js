@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import {Button, Container, Grid, TextField, Typography} from '@material-ui/core';
 import {withStyles} from '@material-ui/core/styles';
@@ -33,6 +33,20 @@ function InputContainer(props) {
 
 	const {classes} = props;
 
+	const [fileName, setFileName] = useState("");
+	const [code, setCode] = useState("");
+	const [loader, setLoader] = useState(true)
+
+	if (loader) {
+		return (
+			<section className={classes.root}>
+				<Container className={classes.container}>
+					<div>Loading....</div>
+				</Container>
+			</section>)
+
+	}
+
 	return (
 		<section className={classes.root}>
 			<Container className={classes.container}>
@@ -50,6 +64,8 @@ function InputContainer(props) {
 									</Typography>}
 									placeholder="Filename"
 									fullWidth
+									value={fileName}
+									onChange={event => setFileName(event.target.value)}
 									variant="outlined"
 									margin="normal"
 								/>
@@ -64,6 +80,8 @@ function InputContainer(props) {
 										Code
 									</Typography>}
 									multiline
+									value={code}
+									onChange={event => setCode(event.target.value)}
 									rows={20}
 									fullWidth
 									variant="outlined"
@@ -77,7 +95,7 @@ function InputContainer(props) {
 								</Typography>
 							</div>
 						</Grid>
-						
+
 					</Grid>
 				</div>
 				<Button
@@ -86,6 +104,19 @@ function InputContainer(props) {
 					variant="contained"
 					className={classes.button}
 					component="a"
+					onClick={event => {
+						// 
+						alert(fileName);
+						alert(code);
+						setLoader(true);
+
+						// axios.
+						// then {
+						// setLoader(false);
+						// }
+
+						return false;
+					}}
 					href="/results"
 				>
 					Show Magic
