@@ -24,7 +24,8 @@ public class ServerlessService {
     public String packageCode(Code code) throws IOException {
 
         StringBuilder result = new StringBuilder();
-        // Create code from template by replacing the required code string        
+        // Create code from template by replacing the required code string  
+        /*      
         List<String> newLines = new ArrayList<>();
         for (String line : Files.readAllLines(
             Paths.get("/Users/johne/Documents/CodeRepository/QuarkusHackathonWorkspace/serverlessapp/src/main/java/org/qksplaybook/ProcessingService.bak"), 
@@ -144,7 +145,8 @@ public class ServerlessService {
         } catch (InterruptedException e) {
             e.printStackTrace();
         } 
-
+        */
+        result.append("str");
         return result.toString();
     }
     
