@@ -1,11 +1,10 @@
 package com.playbook.processor;
 
 import com.common.beans.Code;
-import com.playbook.processor.service.CodeService;
 import io.smallrye.reactive.messaging.annotations.Broadcast;
 import org.eclipse.microprofile.reactive.messaging.Incoming;
 import org.eclipse.microprofile.reactive.messaging.Outgoing;
-
+import com.playbook.processor.service.ServerlessService;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
@@ -13,7 +12,7 @@ import javax.inject.Inject;
 public class CodeProcessor {
     
     @Inject
-    CodeService codeService;
+    ServerlessService serverlessService;
     
     /**
      * A bean consuming data from the "code-exec" Kafka topic.
@@ -23,10 +22,9 @@ public class CodeProcessor {
     @Incoming("code-exec")
     @Outgoing("code-result")
     @Broadcast
-    public String processExec(Code code) {
+    public String processExec(Code code) throws Exception {
         System.out.println(code);
-        return "ok";
-//        return codeService.packageCode(code);
+        return serverlessService.packageCode(code);
     }
     
 }

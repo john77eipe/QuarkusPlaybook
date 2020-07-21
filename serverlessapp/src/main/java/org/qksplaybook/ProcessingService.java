@@ -1,20 +1,16 @@
 package org.qksplaybook;
 
 import javax.enterprise.context.ApplicationScoped;
+import java.util.HashMap;
+
 
 @ApplicationScoped
 public class ProcessingService {
 
-    public static final String CAN_ONLY_GREET_NICKNAMES = "Can only greet nicknames";
-
-    public OutputObject process(InputObject input) {
-        if (input.getName().equals("Stuart")) {
-            throw new IllegalArgumentException(CAN_ONLY_GREET_NICKNAMES);
-        }
-        String result = input.getGreeting() + " " + input.getName();
+    public OutputObject process(HashMap<String, String> input) {
         OutputObject output = new OutputObject();
-        result="my name SK";
-        output.setResult(result);
+        input.put("weight","34kg");
+        output.setResult(input);
         return output;
     }
 }

@@ -5,7 +5,7 @@ import java.io.Serializable;
 public class Code implements Serializable {
     
     
-    
+    private String inputSample;
     private String filename;
     private String code;
     private String id;
@@ -45,11 +45,14 @@ public class Code implements Serializable {
     
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("Code{");
-        sb.append("filename='").append(filename).append('\'');
-        sb.append(", code='").append(code).append('\'');
-        sb.append(", id='").append(id).append('\'');
-        sb.append('}');
-        return sb.toString();
+        return "Code [code=" + code + ", filename=" + filename + ", id=" + id + ", inputSample=" + inputSample + "]";
+    }
+
+    public String getInputSample() {
+        return inputSample;
+    }
+
+    public void setInputSample(String inputSample) {
+        this.inputSample = inputSample;
     }
 }

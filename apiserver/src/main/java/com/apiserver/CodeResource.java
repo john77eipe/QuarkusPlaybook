@@ -66,6 +66,7 @@ public class CodeResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public String add(final Code code) {
+        System.out.println("code added");
         String insertedId = "";
         try {
             insertedId = codeService.add(code);
@@ -97,6 +98,7 @@ public class CodeResource {
      */
     @Incoming("code-output")
     public void processOutput(String result) {
+        System.out.println("Result received: "+ result);
         codeService.addResults(result);
     }
 

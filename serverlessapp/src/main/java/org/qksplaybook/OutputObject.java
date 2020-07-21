@@ -1,12 +1,14 @@
 package org.qksplaybook;
 
+import java.util.Map;
+
 public class OutputObject {
 
-    private String result;
+    private Map<String, String> result;
 
     private String requestId;
 
-    public String getResult() {
+    public Map<String, String> getResult() {
         return result;
     }
 
@@ -14,7 +16,7 @@ public class OutputObject {
         return requestId;
     }
 
-    public OutputObject setResult(String result) {
+    public OutputObject setResult(Map<String, String> result) {
         this.result = result;
         return this;
     }

@@ -34,7 +34,7 @@ function cmd_invoke() {
     --cli-binary-format raw-in-base64-out \
     response.json
   { set +x; } 2>/dev/null
-  cat response.json
+  cat response.json && rm -f response.json
 }
 
 function cmd_update() {
