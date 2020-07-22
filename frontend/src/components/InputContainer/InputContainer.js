@@ -128,7 +128,7 @@ function InputContainer(props) {
 						// setLoader(false);
 						// }
 						axios({
-							method: 'post',
+							method: 'POST',
 							url: 'http://localhost:8080/code/add',
 							data: {
 								"code": "input.put(\"weight\",\"34kg\");",
@@ -143,7 +143,6 @@ function InputContainer(props) {
 						});
 						return false;
 					}}
-					href="/results"
 				>
 					Show Magic
 				</Button>
