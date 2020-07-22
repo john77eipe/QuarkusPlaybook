@@ -131,8 +131,8 @@ function InputContainer(props) {
 							method: 'POST',
 							url: 'http://localhost:8080/code/add',
 							data: {
-								"code": "input.put(\"weight\",\"34kg\");",
-								"filename": "fileName",
+								"code": code,
+								"filename": fileName,
 								"inputSample":sampleInput
 							}
 						})
