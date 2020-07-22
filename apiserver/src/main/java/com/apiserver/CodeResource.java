@@ -3,6 +3,8 @@ package com.apiserver;
 import com.apiserver.services.CodeService;
 import com.apiserver.services.KafkaWriter;
 import com.common.beans.Code;
+import com.mongodb.client.FindIterable;
+import org.bson.Document;
 import org.eclipse.microprofile.reactive.messaging.Incoming;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -14,6 +16,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import java.util.ArrayList;
 import java.util.List;
 
 //import io.smallrye.mutiny.Uni;
@@ -61,6 +64,19 @@ public class CodeResource {
         return codeService.fetchResult(id);
     }
     
+    @GET
+    @Path("/results")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Document> fetchresult() {
+        
+        FindIterable<Document> iterable = codeService.fetchAll().find();
+        List<Document> documents = new ArrayList<>();
+        for (Document document : iterable) {
+            documents.add(document);
+        }
+        return documents;
+    }
+    
     @POST
     @Path("/add")
     @Produces(MediaType.APPLICATION_JSON)
@@ -98,7 +114,7 @@ public class CodeResource {
      */
     @Incoming("code-result")
     public void processOutput(String result) {
-        System.out.println("Result received: "+ result);
+        System.out.println("Result received: " + result);
         codeService.addResults(result);
     }
 

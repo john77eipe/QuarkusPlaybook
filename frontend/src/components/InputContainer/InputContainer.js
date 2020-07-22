@@ -37,15 +37,15 @@ function InputContainer(props) {
 	const [fileName, setFileName] = useState("");
 	const [code, setCode] = useState("");
 	const [sampleInput, setSampleInput] = useState("");
-	const [loader, setLoader] = useState(true)
+	const [loader, setLoader] = useState(false);
 
 	if (loader) {
-		// return (
-		// 	<section className={classes.root}>
-		// 		<Container className={classes.container}>
-		// 			<div>Loading....</div>
-		// 		</Container>
-		// 	</section>)
+		return (
+			<section className={classes.root}>
+				<Container className={classes.container}>
+					<div>Processing....</div>
+				</Container>
+			</section>)
 	}
 
 	return (
@@ -117,16 +117,9 @@ function InputContainer(props) {
 					variant="contained"
 					className={classes.button}
 					component="a"
+					disabled={loader}
 					onClick={event => {
-						// 
-						alert(fileName);
-						alert(code);
-						//setLoader(true);
-
-						// axios.
-						// then {
-						// setLoader(false);
-						// }
+						setLoader(true);
 						axios({
 							method: 'POST',
 							url: 'http://localhost:8080/code/add',
@@ -136,11 +129,13 @@ function InputContainer(props) {
 								"inputSample":sampleInput
 							}
 						})
-						.then((response) => {
-							console.log(response);
-						}, (error) => {
-							console.log(error);
-						});
+							.then((response) => {
+								console.log(response);
+								setLoader(false);
+							}, (error) => {
+								console.log(error);
+								setLoader(false);
+							});
 						return false;
 					}}
 				>

@@ -57,6 +57,10 @@ public class CodeService {
         return Optional.ofNullable(mongoClient.getDatabase("test").getCollection("results").find().first()).orElseGet(Document::new).toJson();
     }
     
+    public MongoCollection<Document> fetchAll() {
+        return mongoClient.getDatabase("test").getCollection("results");
+    }
+    
     public void addResults(String result) {
         Document document = new Document()
                 .append("result", result);
