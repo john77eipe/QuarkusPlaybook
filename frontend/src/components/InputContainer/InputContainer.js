@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import {Button, Container, Grid, TextField, Typography} from '@material-ui/core';
 import {withStyles} from '@material-ui/core/styles';
+import axios from 'axios';
 
 const styles = (theme) => ({
 	root: {
@@ -39,12 +40,12 @@ function InputContainer(props) {
 	const [loader, setLoader] = useState(true)
 
 	if (loader) {
-		return (
-			<section className={classes.root}>
-				<Container className={classes.container}>
-					<div>Loading....</div>
-				</Container>
-			</section>)
+		// return (
+		// 	<section className={classes.root}>
+		// 		<Container className={classes.container}>
+		// 			<div>Loading....</div>
+		// 		</Container>
+		// 	</section>)
 	}
 
 	return (
@@ -120,13 +121,26 @@ function InputContainer(props) {
 						// 
 						alert(fileName);
 						alert(code);
-						setLoader(true);
+						//setLoader(true);
 
 						// axios.
 						// then {
 						// setLoader(false);
 						// }
-
+						axios({
+							method: 'post',
+							url: 'http://localhost:8080/code/add',
+							data: {
+								"code": "input.put(\"weight\",\"34kg\");",
+								"filename": "fileName",
+								"inputSample":sampleInput
+							}
+						})
+						.then((response) => {
+							console.log(response);
+						}, (error) => {
+							console.log(error);
+						});
 						return false;
 					}}
 					href="/results"
