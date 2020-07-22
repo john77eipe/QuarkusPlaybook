@@ -20,12 +20,6 @@ import javax.ws.rs.core.MediaType;
 import java.util.ArrayList;
 import java.util.List;
 
-//import io.smallrye.mutiny.Uni;
-//import io.smallrye.reactive.messaging.annotations.Channel;
-//import org.eclipse.microprofile.reactive.messaging.Emitter;
-//import org.eclipse.microprofile.reactive.messaging.Outgoing;
-
-//import io.smallrye.reactive.messaging.annotations.Stream;
 
 @Path("/code")
 @ApplicationScoped
@@ -37,13 +31,6 @@ public class CodeResource {
     @Inject
     KafkaWriter kafkaWriter;
 
-//    @Inject
-//    @Stream("code-exec")
-//    Emitter<Code> emitter;
-
-//    @Inject
-//    @Channel("code-exec")
-//    Emitter<Code> emitter;
     
     @GET
     @Produces(MediaType.TEXT_PLAIN)
@@ -83,13 +70,10 @@ public class CodeResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public String add(final Code code) {
-        System.out.println("code added");
         String insertedId = "";
         try {
             insertedId = codeService.add(code);
             code.setId(insertedId);
-//            this.sendToKafka(code);
-//            emitter.send(code);
             kafkaWriter.add(code);
         } catch (Exception e) {
             e.printStackTrace();
@@ -97,16 +81,6 @@ public class CodeResource {
         return insertedId;
     }
 
-//    /**
-//     * A bean consuming data from the "code-exec" Kafka topic.
-//     *
-//     * @param code
-//     */
-//    @Outgoing("code-exec")
-//    @Broadcast
-//    public Code sendToKafka(Code code) {
-//        return code;
-//    }
     
     /**
      * A bean consuming data from the "code-exec" Kafka topic.
@@ -115,18 +89,9 @@ public class CodeResource {
      */
     @Incoming("code-result")
     public void processOutput(Result result) {
-        System.out.println("Result received: " + result);
         codeService.addResults(result);
     }
 
-//    private Random random = new Random();
-//    @Outgoing("code-exec")
-//    public Uni<Code> sendToKafka(Code code) {
-//        
-//         Build an infinite stream of random prices
-//         It emits a price every second
-//        return Uni.createFrom().item(code);
-//}
     
     
 }

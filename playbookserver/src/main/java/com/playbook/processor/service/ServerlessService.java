@@ -37,7 +37,7 @@ public class ServerlessService {
                 newLines.add(line.replace("//PLACEHOLDER//", code.getInputSample()));
             }
         }
-        System.out.println(newLines);
+        //System.out.println(newLines);
         Files.write(Paths.get("/Users/johne/Documents/CodeRepository/QuarkusHackathonWorkspace/serverlessapp/payload.txt"), 
             newLines, StandardCharsets.UTF_8);
 
@@ -52,7 +52,7 @@ public class ServerlessService {
                 newLines.add(line);
             }
         }
-        System.out.println(newLines);
+        //System.out.println(newLines);
         Files.write(Paths.get("/Users/johne/Documents/CodeRepository/QuarkusHackathonWorkspace/serverlessapp/src/main/java/org/qksplaybook/ProcessingService.java"), 
             newLines, StandardCharsets.UTF_8);
         
@@ -63,7 +63,7 @@ public class ServerlessService {
         .directory(new File("/Users/johne/Documents/CodeRepository/QuarkusHackathonWorkspace/serverlessapp"));
        
         try {
-            System.out.println(processBuilderForMVNPackage.command());
+            //System.out.println(processBuilderForMVNPackage.command());
             Process process = processBuilderForMVNPackage.start();
             StringBuilder output = new StringBuilder();
             BufferedReader reader = new BufferedReader(
@@ -75,8 +75,8 @@ public class ServerlessService {
 
             boolean exitVal = process.waitFor(20, TimeUnit.SECONDS);
             if (exitVal) {
-                System.out.println("Success!");
-                System.out.println(output);
+                //System.out.println("Success!");
+                //System.out.println(output);
                 result.append("[Compiled] [Packaged]");
             } else {
                 //abnormal...
@@ -93,7 +93,7 @@ public class ServerlessService {
         .directory(new File("/Users/johne/Documents/CodeRepository/QuarkusHackathonWorkspace/serverlessapp"));
 
         try {
-            System.out.println(processBuilderForLamdbaCreate.command());
+            //System.out.println(processBuilderForLamdbaCreate.command());
             Process process = processBuilderForLamdbaCreate.start();
             StringBuilder output = new StringBuilder();
             BufferedReader reader = new BufferedReader(
@@ -105,8 +105,8 @@ public class ServerlessService {
 
             boolean exitVal = process.waitFor(100, TimeUnit.SECONDS);
             if (exitVal) {
-                System.out.println("Success!");
-                System.out.println(output);
+                //System.out.println("Success!");
+                //System.out.println(output);
                 result.append(" [Serverless Function created]");
             } else {
                 //abnormal...
@@ -124,7 +124,7 @@ public class ServerlessService {
         .directory(new File("/Users/johne/Documents/CodeRepository/QuarkusHackathonWorkspace/serverlessapp"));
 
         try {
-            System.out.println(processBuilderForLamdbaInvoke.command());
+            //System.out.println(processBuilderForLamdbaInvoke.command());
             Process process = processBuilderForLamdbaInvoke.start();
             StringBuilder output = new StringBuilder();
             BufferedReader reader = new BufferedReader(
@@ -136,8 +136,8 @@ public class ServerlessService {
 
             boolean exitVal = process.waitFor(80, TimeUnit.SECONDS);
             if (exitVal) {
-                System.out.println("Success!");
-                System.out.println(output);
+                //System.out.println("Success!");
+                //System.out.println(output);
                 result.append(" ["+output+"]");
             } else {
                 //abnormal...

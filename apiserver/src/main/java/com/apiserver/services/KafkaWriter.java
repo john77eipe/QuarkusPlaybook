@@ -25,7 +25,6 @@ public class KafkaWriter {
         return CompletableFuture.supplyAsync(() -> {
             try {
                 Code productPrice = messages.take();
-                System.out.println("Publishing event for updated product: " + productPrice);
                 return Message.of(productPrice);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
