@@ -1,6 +1,7 @@
 package com.apiserver.services;
 
 import com.common.beans.Code;
+import com.common.beans.Result;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
@@ -8,18 +9,9 @@ import org.bson.Document;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.TimeUnit;
 
 @ApplicationScoped
 public class CodeService {
@@ -61,9 +53,10 @@ public class CodeService {
         return mongoClient.getDatabase("test").getCollection("results");
     }
     
-    public void addResults(String result) {
+    public void addResults(Result result) {
         Document document = new Document()
-                .append("result", result);
+                .append("name", result.getName())
+                .append("result", result.getResult());
         mongoClient.getDatabase("test").getCollection("results").insertOne(document);
     }
     

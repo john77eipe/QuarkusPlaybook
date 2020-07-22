@@ -3,6 +3,7 @@ package com.apiserver;
 import com.apiserver.services.CodeService;
 import com.apiserver.services.KafkaWriter;
 import com.common.beans.Code;
+import com.common.beans.Result;
 import com.mongodb.client.FindIterable;
 import org.bson.Document;
 import org.eclipse.microprofile.reactive.messaging.Incoming;
@@ -113,7 +114,7 @@ public class CodeResource {
      * @param result
      */
     @Incoming("code-result")
-    public void processOutput(String result) {
+    public void processOutput(Result result) {
         System.out.println("Result received: " + result);
         codeService.addResults(result);
     }
