@@ -24,9 +24,25 @@ public class ServerlessService {
     public String packageCode(Code code) throws IOException {
 
         StringBuilder result = new StringBuilder();
-        // Create code from template by replacing the required code string  
+        
            
-        List<String> newLines = new ArrayList<>();
+        List<String> newLines = null;
+
+        // Write sample input to payload.txt
+        newLines = new ArrayList<>();
+        for (String line : Files.readAllLines(
+            Paths.get("/Users/johne/Documents/CodeRepository/QuarkusHackathonWorkspace/serverlessapp/payload.txt.bak"), 
+            StandardCharsets.UTF_8)) {
+            if (line.contains("//PLACEHOLDER//")) {
+                newLines.add(line.replace("//PLACEHOLDER//", code.getInputSample()));
+            }
+        }
+        System.out.println(newLines);
+        Files.write(Paths.get("/Users/johne/Documents/CodeRepository/QuarkusHackathonWorkspace/serverlessapp/payload.txt"), 
+            newLines, StandardCharsets.UTF_8);
+
+        // Create code from template by replacing the required code string  
+        newLines = new ArrayList<>();
         for (String line : Files.readAllLines(
             Paths.get("/Users/johne/Documents/CodeRepository/QuarkusHackathonWorkspace/serverlessapp/src/main/java/org/qksplaybook/ProcessingService.bak"), 
             StandardCharsets.UTF_8)) {
@@ -38,19 +54,6 @@ public class ServerlessService {
         }
         System.out.println(newLines);
         Files.write(Paths.get("/Users/johne/Documents/CodeRepository/QuarkusHackathonWorkspace/serverlessapp/src/main/java/org/qksplaybook/ProcessingService.java"), 
-            newLines, StandardCharsets.UTF_8);
-        
-        newLines = new ArrayList<>();
-        // Write sample input to payload.txt
-        for (String line : Files.readAllLines(
-            Paths.get("/Users/johne/Documents/CodeRepository/QuarkusHackathonWorkspace/serverlessapp/payload.txt.bak"), 
-            StandardCharsets.UTF_8)) {
-            if (line.contains("//PLACEHOLDER//")) {
-                newLines.add(line.replace("//PLACEHOLDER//", code.getInputSample()));
-            }
-        }
-        System.out.println(newLines);
-        Files.write(Paths.get("/Users/johne/Documents/CodeRepository/QuarkusHackathonWorkspace/serverlessapp/payload.txt"), 
             newLines, StandardCharsets.UTF_8);
         
         // Perform maven compilation
@@ -74,7 +77,7 @@ public class ServerlessService {
             if (exitVal) {
                 System.out.println("Success!");
                 System.out.println(output);
-                result.append(output);
+                result.append("[Compiled] [Packaged]");
             } else {
                 //abnormal...
             }
@@ -104,7 +107,7 @@ public class ServerlessService {
             if (exitVal) {
                 System.out.println("Success!");
                 System.out.println(output);
-                result.append(output);
+                result.append(" [Serverless Function created]");
             } else {
                 //abnormal...
             }
@@ -135,7 +138,7 @@ public class ServerlessService {
             if (exitVal) {
                 System.out.println("Success!");
                 System.out.println(output);
-                result.append(output);
+                result.append(" ["+output+"]");
             } else {
                 //abnormal...
             }
