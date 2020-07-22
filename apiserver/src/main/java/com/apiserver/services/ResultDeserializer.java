@@ -1,11 +1,13 @@
 package com.apiserver.services;
 
 import com.common.beans.Result;
-import io.quarkus.kafka.client.serialization.JsonbDeserializer;
+import org.apache.commons.lang3.SerializationUtils;
+import org.apache.kafka.common.serialization.Deserializer;
 
-public class ResultDeserializer extends JsonbDeserializer<Result> {
+public class ResultDeserializer implements Deserializer<Result> {
     
-    public ResultDeserializer() {
-        super(Result.class);
+    @Override
+    public Result deserialize(String s, byte[] bytes) {
+        return SerializationUtils.deserialize(bytes);
     }
 }
