@@ -1,10 +1,10 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Header} from "../components";
 import MUIDataTable from "mui-datatables";
 import TableTheme from "../theme/TableTheme";
 import {Container, Grid} from '@material-ui/core';
 import {withStyles} from '@material-ui/core/styles';
-
+import axios from 'axios';
 
 const styles = (theme) => ({
 	root: {
@@ -21,15 +21,25 @@ const styles = (theme) => ({
 function Results(props) {
 
 	const {classes} = props;
+	const [tableData, setTableData] = useState([]);
+
+	useEffect(() => {
+		axios({
+			method: 'GET',
+			url: 'http://localhost:8080/code/results',
+		})
+			.then((response) => {
+				console.log(response.data);
+				setTableData(response.data);
+			}, (error) => {
+				console.log(error);
+			});
+	}, [])
 
 	const columns = [
 		{
 			name: "name",
 			label: "Name",
-		},
-		{
-			name: "status",
-			label: "Status",
 		},
 		{
 			name: "result",
@@ -39,55 +49,10 @@ function Results(props) {
 
 	const options = {
 		filterType: 'radio',
-		// print: false,
-		// download: false,
 		viewColumns: false,
-		// pagination: false,
-		// selectableRows: false,
 		delete: false,
-		// search: false,
-		// filter: false,
 		disableToolbarSelect: true,
-		setTableProps: () => {
-			return {
-				padding: "default",
-				size: "small",
-			};
-		}
 	};
-
-	const tableData = [
-		{
-			"taskId": "sxtdrcfytvghbj1",
-			"name": "Abcd1.java",
-			"status": "Completed",
-			"result": "Your input is processed successfully."
-		},
-		{
-			"taskId": "sxtdrcfytvghbj2",
-			"name": "Abcd2.java",
-			"status": "Completed",
-			"result": "Your input is processed successfully."
-		},
-		{
-			"taskId": "sxtdrcfytvghbj3",
-			"name": "Abcd3.java",
-			"status": "Completed",
-			"result": "Your input is processed successfully."
-		},
-		{
-			"taskId": "sxtdrcfytvghbj4",
-			"name": "Abcd4.java",
-			"status": "Completed",
-			"result": "Your input is processed successfully."
-		},
-		{
-			"taskId": "sxtdrcfytvghbj5",
-			"name": "Abcd5.java",
-			"status": "Processing",
-			"result": "Your input is processed successfully."
-		}
-	]
 
 	return (
 		<React.Fragment>
