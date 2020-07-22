@@ -17,9 +17,13 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 @ApplicationScoped
 public class ServerlessService {
+
+    @ConfigProperty(name = "serverlessapp.location")
+    String location;
     
     public String packageCode(Code code) throws IOException {
 
@@ -31,20 +35,20 @@ public class ServerlessService {
         // Write sample input to payload.txt
         newLines = new ArrayList<>();
         for (String line : Files.readAllLines(
-            Paths.get("/Users/johne/Documents/CodeRepository/QuarkusHackathonWorkspace/serverlessapp/payload.txt.bak"), 
+            Paths.get(location+"/payload.txt.bak"), 
             StandardCharsets.UTF_8)) {
             if (line.contains("//PLACEHOLDER//")) {
                 newLines.add(line.replace("//PLACEHOLDER//", code.getInputSample()));
             }
         }
         //System.out.println(newLines);
-        Files.write(Paths.get("/Users/johne/Documents/CodeRepository/QuarkusHackathonWorkspace/serverlessapp/payload.txt"), 
+        Files.write(Paths.get(location+"/payload.txt"), 
             newLines, StandardCharsets.UTF_8);
 
         // Create code from template by replacing the required code string  
         newLines = new ArrayList<>();
         for (String line : Files.readAllLines(
-            Paths.get("/Users/johne/Documents/CodeRepository/QuarkusHackathonWorkspace/serverlessapp/src/main/java/org/qksplaybook/ProcessingService.bak"), 
+            Paths.get(location+"/src/main/java/org/qksplaybook/ProcessingService.bak"), 
             StandardCharsets.UTF_8)) {
             if (line.contains("//PLACEHOLDER//")) {
                 newLines.add(line.replace("//PLACEHOLDER//", code.getCode()));
@@ -53,14 +57,14 @@ public class ServerlessService {
             }
         }
         //System.out.println(newLines);
-        Files.write(Paths.get("/Users/johne/Documents/CodeRepository/QuarkusHackathonWorkspace/serverlessapp/src/main/java/org/qksplaybook/ProcessingService.java"), 
+        Files.write(Paths.get(location+"/src/main/java/org/qksplaybook/ProcessingService.java"), 
             newLines, StandardCharsets.UTF_8);
         
         // Perform maven compilation
         ProcessBuilder processBuilderForMVNPackage = new ProcessBuilder();
 
         processBuilderForMVNPackage.command("bash", "-c", "mvn clean package -DskipTests")
-        .directory(new File("/Users/johne/Documents/CodeRepository/QuarkusHackathonWorkspace/serverlessapp"));
+        .directory(new File(location+"/serverlessapp"));
        
         try {
             //System.out.println(processBuilderForMVNPackage.command());
@@ -90,7 +94,7 @@ public class ServerlessService {
         
         ProcessBuilder processBuilderForLamdbaCreate = new ProcessBuilder();
         processBuilderForLamdbaCreate.command("bash", "-c", "FUNCTION_NAME="+code.getFilename()+" ./aws_tool.sh delete create")
-        .directory(new File("/Users/johne/Documents/CodeRepository/QuarkusHackathonWorkspace/serverlessapp"));
+        .directory(new File(location));
 
         try {
             //System.out.println(processBuilderForLamdbaCreate.command());
@@ -121,7 +125,7 @@ public class ServerlessService {
 
         ProcessBuilder processBuilderForLamdbaInvoke = new ProcessBuilder();
         processBuilderForLamdbaInvoke.command("bash", "-c", "FUNCTION_NAME="+code.getFilename()+" ./aws_tool.sh invoke")
-        .directory(new File("/Users/johne/Documents/CodeRepository/QuarkusHackathonWorkspace/serverlessapp"));
+        .directory(new File(location));
 
         try {
             //System.out.println(processBuilderForLamdbaInvoke.command());
