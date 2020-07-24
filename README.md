@@ -29,3 +29,26 @@
   `mvn install`
   `mvn quarkus:dev`
 6. Point your browser to `http://localhost:3000`
+
+## Web Sequence Diagram
+
+```
+title QuarkusLamdba
+
+UI->WebServer:Submits {filename, code}
+WebServer->Kafka: Push {filename, code}
+WebServer->Mongo: Save {filename, code}
+note right of PlaybookServer: Listener
+Kafka->PlaybookServer: Pull {filename, code}
+PlaybookServer->PlaybookServer: Start Code Replace
+PlaybookServer->PlaybookServer: Start MVN Build
+PlaybookServer->AWSCli: Function Create
+AWSCli->AWS Lambda: Function Create
+PlaybookServer->AWSCli: Function Invoke
+AWSCli->AWS Lambda: Function Invoke
+PlaybookServer->Kafka: Response from above calls
+note right of WebServer: Listener
+Kafka->WebServer: Pull Response
+```
+
+Try this out in https://www.websequencediagrams.com/
