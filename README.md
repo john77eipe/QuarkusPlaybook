@@ -22,6 +22,8 @@
 3. Start Mongo server
 4. Start Kafka server (Zookeeper and Kafka broker)
 5. Build projects
+  0. common
+    `mvn install`
   1. frontend 
   `yarn install`
   `yarn start`
