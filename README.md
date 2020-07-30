@@ -22,14 +22,14 @@
 3. Start Mongo server
 4. Start Kafka server (Zookeeper and Kafka broker)
 5. Build projects
-  0. common
-    `mvn install`
-  1. frontend 
-  `yarn install`
-  `yarn start`
-  2. apiserver and playbookserver
-  `mvn install`
-  `mvn quarkus:dev`
+    1. common
+       `mvn install`
+    2. frontend 
+       `yarn install`
+       `yarn start`
+    3. apiserver and playbookserver
+       `mvn install`
+       `mvn quarkus:dev`
 6. Point your browser to `http://localhost:3000`
 
 ## Web Sequence Diagram
